@@ -1,0 +1,29 @@
+def mail() {
+      configFileProvider([configFile(fileId: 'f246c43c-d3e7-4ff4-9f82-583d492b06b9', variable: 'jsonfile')]) 
+                {
+                    script {
+                        def file = readJSON file: jsonfile, returnPojo: true
+                        def keyList = file['std']['new']['user']
+                        return keyList
+                    }
+                }
+}
+
+parameters {
+  extendedChoice defaultValue: '', multiSelectDelimiter: ',', name: 'Test', propertyFile: "${env.WORKSPACE}/propFile.properties", propertyKey: 'users', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_SINGLE_SELECT', visibleItemCount: 2
+}
+stages {
+        stage('Hello') {
+          steps {
+              script {
+                  def value = mail()
+                  echo "${env.WORKSPACE}"
+              }
+               
+            }
+        }
+       
+    }
+}
+
+
